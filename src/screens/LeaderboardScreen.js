@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 import { useGame } from '../context/GameContext';
 import { TEAMS } from '../utils/constants';
-import { calculatePolygonArea, sqMetersToSqMiles } from '../utils/geo';
+import { calculatePolygonArea, sqMetersToSqMiles, formatArea } from '../utils/geo';
 
 export default function LeaderboardScreen() {
   const { state } = useGame();
@@ -49,7 +49,7 @@ export default function LeaderboardScreen() {
                 Team {team.name}
               </Text>
               <Text style={styles.stat}>
-                {entry.area.toFixed(3)} sq mi claimed
+                {formatArea(entry.area)} claimed
               </Text>
             </View>
             <View style={styles.members}>
@@ -80,7 +80,7 @@ export default function LeaderboardScreen() {
                   ]}
                 />
               </View>
-              <Text style={styles.chartValue}>{entry.area.toFixed(3)}</Text>
+              <Text style={styles.chartValue}>{formatArea(entry.area)}</Text>
             </View>
           );
         })}
@@ -112,30 +112,35 @@ export default function LeaderboardScreen() {
     return Object.values(playerMap).sort((a, b) => b.area - a.area);
   }, [state.territories, state.player]);
 
-  // Build token ranking — current player + sample players
+  // Build token ranking from real territory data (same players as area tab)
   const tokenRanking = useMemo(() => {
-    const players = state.leaderboard.players.map((p) => ({
-      ...p,
-      isMe: state.player && p.name === state.player.name,
-    }));
+    const playerMap = {};
+    state.territories.forEach((t) => {
+      const name = t.claimedBy || 'unknown';
+      if (!playerMap[name]) {
+        playerMap[name] = { name, team: t.team, tokens: 0 };
+      }
+      // Count tokens earned from territories (each territory = some tokens)
+      playerMap[name].tokens += (t.tokensEarned || 0);
+    });
 
-    // Add current player if not already in the list
-    if (state.player && !players.some((p) => p.name === state.player.name)) {
-      players.push({
-        name: state.player.name,
-        team: state.player.team,
-        tokens: state.playerTokens,
-        area: 0,
-        isMe: true,
-      });
-    } else {
-      // Update current player's token count to real value
-      const me = players.find((p) => p.isMe);
-      if (me) me.tokens = state.playerTokens;
+    // Ensure current player is included with their real token count
+    if (state.player) {
+      if (playerMap[state.player.name]) {
+        playerMap[state.player.name].tokens = state.playerTokens;
+      } else {
+        playerMap[state.player.name] = {
+          name: state.player.name,
+          team: state.player.team,
+          tokens: state.playerTokens,
+        };
+      }
     }
 
-    return players.sort((a, b) => b.tokens - a.tokens);
-  }, [state.leaderboard.players, state.player, state.playerTokens]);
+    return Object.values(playerMap)
+      .map((p) => ({ ...p, isMe: state.player && p.name === state.player.name }))
+      .sort((a, b) => b.tokens - a.tokens);
+  }, [state.territories, state.player, state.playerTokens]);
 
   const renderPlayerLeaderboard = () => (
     <View>
@@ -158,7 +163,7 @@ export default function LeaderboardScreen() {
                 {player.name} {isMe ? '(you)' : ''}
               </Text>
               <Text style={styles.stat}>
-                {player.area.toFixed(3)} sq mi
+                {formatArea(player.area)}
               </Text>
             </View>
             <View style={styles.areaValue}>
@@ -392,8 +397,8 @@ const styles = StyleSheet.create({
   },
   chartValue: {
     color: '#aaa',
-    fontSize: 13,
-    width: 40,
+    fontSize: 11,
+    width: 70,
     textAlign: 'right',
   },
 });

@@ -12,7 +12,7 @@ import {
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useGame } from '../context/GameContext';
 import { TEAMS } from '../utils/constants';
-import { calculatePolygonArea, sqMetersToSqMiles } from '../utils/geo';
+import { calculatePolygonArea, sqMetersToSqMiles, formatArea } from '../utils/geo';
 
 // Generate a color from team base at a given lightness (0 = dark, 1 = light)
 function hexToHSL(hex) {
@@ -219,9 +219,9 @@ export default function ProfileScreen() {
             <View style={styles.teamStatRow}>
               <Text style={styles.teamStatLabel}>My Area</Text>
               <Text style={styles.teamStatValue}>
-                {sqMetersToSqMiles(
+                {formatArea(sqMetersToSqMiles(
                   myTerritories.reduce((sum, t) => sum + calculatePolygonArea(t.polygon), 0)
-                ).toFixed(3)} sq mi
+                ))}
               </Text>
             </View>
             <View style={styles.teamStatRow}>

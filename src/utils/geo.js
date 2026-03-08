@@ -58,6 +58,15 @@ export function sqMetersToSqMiles(sqMeters) {
   return sqMeters / 2589988.11;
 }
 
+// Format area: use sq ft if less than 0.1 sq mi, otherwise sq mi
+export function formatArea(sqMiles) {
+  if (sqMiles < 0.1) {
+    const sqFeet = sqMiles * 27878400;
+    return `${sqFeet.toFixed(0)} sq ft`;
+  }
+  return `${sqMiles.toFixed(3)} sq mi`;
+}
+
 // Generate a polygon buffer around a path
 export function generatePathBuffer(path, bufferSize = 0.0003) {
   if (path.length < 2) return [];

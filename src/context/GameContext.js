@@ -245,6 +245,9 @@ function gameReducer(state, action) {
         currentPath: [...state.currentPath, action.payload],
       };
 
+    case 'CLEAR_LINE_BREAK':
+      return { ...state, lineBreak: false };
+
     case 'LINE_BREAK':
       return {
         ...state,

@@ -113,6 +113,7 @@ export default function MapScreen() {
   const [isAnimating, setIsAnimating] = useState(false);
   const [currentStopIdx, setCurrentStopIdx] = useState(-1);
   const [showPathCard, setShowPathCard] = useState(false);
+  const [smartPathDistance, setSmartPathDistance] = useState(null); // total miles
   const animTimerRef = useRef(null);
   const pulseAnim = useRef(new Animated.Value(0)).current;
 
@@ -234,6 +235,16 @@ export default function MapScreen() {
       }
     };
   }, [state.isDrawing, state.lineBreak]);
+
+  // Auto-dismiss line break warning after 5 seconds
+  useEffect(() => {
+    if (state.lineBreak) {
+      const timer = setTimeout(() => {
+        dispatch({ type: 'CLEAR_LINE_BREAK' });
+      }, 5000);
+      return () => clearTimeout(timer);
+    }
+  }, [state.lineBreak]);
 
   // Handle focus from other screens (e.g., tapping a landmark in Discover)
   useEffect(() => {
@@ -494,6 +505,16 @@ export default function MapScreen() {
       },
     ];
 
+    // Calculate total path distance in miles
+    let totalMeters = 0;
+    for (let i = 1; i < walkingCoords.length; i++) {
+      totalMeters += getDistance(
+        walkingCoords[i - 1].latitude, walkingCoords[i - 1].longitude,
+        walkingCoords[i].latitude, walkingCoords[i].longitude
+      );
+    }
+    setSmartPathDistance((totalMeters / 1609.34).toFixed(2));
+
     setSmartPath(optimizedWithReturn);
     setSmartPathCoords(walkingCoords);
     setCurrentStopIdx(-1);
@@ -574,6 +595,7 @@ export default function MapScreen() {
     stopWalkingPath();
     setSmartPath(null);
     setSmartPathCoords([]);
+    setSmartPathDistance(null);
     setShowPathCard(false);
   };
 
@@ -852,6 +874,11 @@ export default function MapScreen() {
 
         {smartPath ? (
           <View style={styles.smartPathControls}>
+            {smartPathDistance && !isWalkingPath && (
+              <View style={styles.distanceBadge}>
+                <Text style={styles.distanceBadgeText}>{smartPathDistance} mi</Text>
+              </View>
+            )}
             {isAnimating ? (
               <TouchableOpacity
                 style={[styles.drawBtn, { backgroundColor: '#ff4444' }]}
@@ -915,14 +942,14 @@ export default function MapScreen() {
             >
               <Text style={styles.exploreBtnIcon}>✨</Text>
               <Text style={[styles.exploreBtnText, { color: team ? neonColor(team.color) : '#00FFFF' }]}>
-                Smart Explore
+                Smart Stride
               </Text>
             </TouchableOpacity>
             <TouchableOpacity
               style={[styles.drawBtn, { backgroundColor: team?.color || '#e94560' }]}
               onPress={handleStartDrawing}
             >
-              <Text style={styles.drawBtnText}>Start Claiming</Text>
+              <Text style={styles.drawBtnText}>Begin Counquering</Text>
             </TouchableOpacity>
           </View>
         ) : (
@@ -1220,6 +1247,19 @@ const styles = StyleSheet.create({
   smartPathControls: {
     width: '100%',
     alignItems: 'center',
+  },
+  distanceBadge: {
+    alignSelf: 'flex-end',
+    backgroundColor: 'rgba(0,0,0,0.8)',
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderRadius: 12,
+    marginBottom: 8,
+  },
+  distanceBadgeText: {
+    color: '#fff',
+    fontSize: 14,
+    fontWeight: 'bold',
   },
   smartPathButtons: {
     flexDirection: 'row',
