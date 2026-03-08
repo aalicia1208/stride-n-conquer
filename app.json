@@ -1,0 +1,42 @@
+{
+  "expo": {
+    "name": "Stride 'n Conquer",
+    "slug": "stride-n-conquer",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "dark",
+    "splash": {
+      "backgroundColor": "#1a1a2e"
+    },
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.stridenconquer.app",
+      "infoPlist": {
+        "NSLocationWhenInUseUsageDescription": "Stride 'n Conquer needs your location to track your movement and claim territory!",
+        "NSLocationAlwaysAndWhenInUseUsageDescription": "Stride 'n Conquer needs your location to track your movement and claim territory!",
+        "NSMotionUsageDescription": "Stride 'n Conquer uses motion data to detect your movement speed."
+      }
+    },
+    "android": {
+      "adaptiveIcon": {
+        "backgroundColor": "#1a1a2e"
+      },
+      "package": "com.stridenconquer.app",
+      "permissions": [
+        "ACCESS_FINE_LOCATION",
+        "ACCESS_COARSE_LOCATION",
+        "ACCESS_BACKGROUND_LOCATION"
+      ]
+    },
+    "plugins": [
+      [
+        "expo-location",
+        {
+          "locationAlwaysAndWhenInUsePermission": "Stride 'n Conquer needs your location to track movement and claim territory."
+        }
+      ],
+      "expo-asset"
+    ]
+  }
+}

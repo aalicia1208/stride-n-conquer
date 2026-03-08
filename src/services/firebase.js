@@ -1,0 +1,114 @@
+import { initializeApp } from 'firebase/app';
+import {
+  getDatabase,
+  ref,
+  onValue,
+  set,
+  push,
+  update,
+  get,
+} from 'firebase/database';
+
+// TODO: Replace with your Firebase config from the Firebase console
+const firebaseConfig = {
+  apiKey: "AIzaSyDDolHwM7vr-cFXQDwjV888oZ4gzyKWYeI",
+  authDomain: "hacktj26.firebaseapp.com",
+  databaseURL: "https://hacktj26-default-rtdb.firebaseio.com",
+  projectId: "hacktj26",
+  storageBucket: "hacktj26.firebasestorage.app",
+  messagingSenderId: "219582573341",
+  appId: "1:219582573341:web:0196e16f325e4a41ffcff4",
+  measurementId: "G-GTRTXQQGXL"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getDatabase(app);
+
+// --- Territories ---
+export function onTerritoriesChange(callback) {
+  const territoriesRef = ref(db, 'territories');
+  return onValue(territoriesRef, (snapshot) => {
+    const data = snapshot.val();
+    const territories = data ? Object.values(data) : [];
+    callback(territories);
+  });
+}
+
+export async function addTerritory(territory) {
+  const territoriesRef = ref(db, `territories/${territory.id}`);
+  await set(territoriesRef, territory);
+}
+
+export async function removeTerritory(territoryId) {
+  const territoryRef = ref(db, `territories/${territoryId}`);
+  await set(territoryRef, null);
+}
+
+// --- Landmarks ---
+export function onLandmarksChange(callback) {
+  const landmarksRef = ref(db, 'landmarks');
+  return onValue(landmarksRef, (snapshot) => {
+    const data = snapshot.val();
+    const landmarks = data ? Object.values(data) : [];
+    callback(landmarks);
+  });
+}
+
+export async function updateLandmark(id, updates) {
+  const landmarkRef = ref(db, `landmarks/${id}`);
+  await update(landmarkRef, updates);
+}
+
+export async function addLandmark(landmark) {
+  const landmarkRef = ref(db, `landmarks/${landmark.id}`);
+  await set(landmarkRef, landmark);
+}
+
+// --- Community Landmarks ---
+export function onCommunityLandmarksChange(callback) {
+  const clRef = ref(db, 'communityLandmarks');
+  return onValue(clRef, (snapshot) => {
+    const data = snapshot.val();
+    const landmarks = data ? Object.values(data) : [];
+    callback(landmarks);
+  });
+}
+
+export async function addCommunityLandmark(landmark) {
+  const clRef = ref(db, `communityLandmarks/${landmark.id}`);
+  await set(clRef, landmark);
+}
+
+export async function updateCommunityLandmark(id, updates) {
+  const clRef = ref(db, `communityLandmarks/${id}`);
+  await update(clRef, updates);
+}
+
+export async function removeCommunityLandmark(id) {
+  const clRef = ref(db, `communityLandmarks/${id}`);
+  await set(clRef, null);
+}
+
+// --- Seed initial data (run once) ---
+export async function seedInitialData(sampleData) {
+  const rootRef = ref(db, '/');
+  const snapshot = await get(rootRef);
+  if (snapshot.exists()) return; // Already seeded
+
+  const { territories, landmarks, communityLandmarks } = sampleData;
+
+  const seedData = {};
+  territories.forEach((t) => {
+    seedData[`territories/${t.id}`] = t;
+  });
+  landmarks.forEach((l) => {
+    seedData[`landmarks/${l.id}`] = l;
+  });
+  communityLandmarks.forEach((cl) => {
+    seedData[`communityLandmarks/${cl.id}`] = cl;
+  });
+
+  await update(ref(db), seedData);
+}
+
+export { db };
