@@ -1,7 +1,256 @@
 // Pre-populated data for Northern Virginia area
 // Shows territory blocks for all 5 teams around Arlington, Falls Church, Tysons, McLean, Fairfax
 
-export const SAMPLE_TERRITORIES = [];
+export const SAMPLE_TERRITORIES = [
+  // === BLUE TEAM — Tysons Corner Center area ===
+  {
+    id: 'terr_blue_1',
+    team: 'blue',
+    claimedBy: 'runner_alex',
+    claimedAt: Date.now() - 86400000 * 3,
+    polygon: [
+      { latitude: 38.9195, longitude: -77.2265 },
+      { latitude: 38.9202, longitude: -77.2240 },
+      { latitude: 38.9210, longitude: -77.2218 },
+      { latitude: 38.9205, longitude: -77.2195 },
+      { latitude: 38.9192, longitude: -77.2180 },
+      { latitude: 38.9178, longitude: -77.2175 },
+      { latitude: 38.9165, longitude: -77.2185 },
+      { latitude: 38.9158, longitude: -77.2205 },
+      { latitude: 38.9160, longitude: -77.2230 },
+      { latitude: 38.9170, longitude: -77.2252 },
+      { latitude: 38.9182, longitude: -77.2263 },
+    ],
+  },
+  // Blue — Jones Branch Dr / Capital One HQ area
+  {
+    id: 'terr_blue_2',
+    team: 'blue',
+    claimedBy: 'walker_chloe',
+    claimedAt: Date.now() - 86400000 * 2,
+    polygon: [
+      { latitude: 38.9228, longitude: -77.2290 },
+      { latitude: 38.9238, longitude: -77.2268 },
+      { latitude: 38.9245, longitude: -77.2242 },
+      { latitude: 38.9240, longitude: -77.2218 },
+      { latitude: 38.9230, longitude: -77.2205 },
+      { latitude: 38.9215, longitude: -77.2210 },
+      { latitude: 38.9208, longitude: -77.2235 },
+      { latitude: 38.9210, longitude: -77.2260 },
+      { latitude: 38.9218, longitude: -77.2282 },
+    ],
+  },
+
+  // === RED TEAM — Cuts through Blue's Tysons territory (territory steal!) ===
+  {
+    id: 'terr_red_1',
+    team: 'red',
+    claimedBy: 'runner_mike',
+    claimedAt: Date.now() - 86400000 * 1,
+    polygon: [
+      { latitude: 38.9210, longitude: -77.2245 },
+      { latitude: 38.9218, longitude: -77.2228 },
+      { latitude: 38.9215, longitude: -77.2205 },
+      { latitude: 38.9205, longitude: -77.2190 },
+      { latitude: 38.9190, longitude: -77.2185 },
+      { latitude: 38.9180, longitude: -77.2195 },
+      { latitude: 38.9175, longitude: -77.2215 },
+      { latitude: 38.9180, longitude: -77.2235 },
+      { latitude: 38.9192, longitude: -77.2248 },
+      { latitude: 38.9202, longitude: -77.2250 },
+    ],
+  },
+  // Red — Gallows Rd / Dunn Loring area
+  {
+    id: 'terr_red_2',
+    team: 'red',
+    claimedBy: 'runner_sarah',
+    claimedAt: Date.now() - 86400000 * 4,
+    polygon: [
+      { latitude: 38.8840, longitude: -77.2195 },
+      { latitude: 38.8852, longitude: -77.2172 },
+      { latitude: 38.8858, longitude: -77.2148 },
+      { latitude: 38.8850, longitude: -77.2125 },
+      { latitude: 38.8835, longitude: -77.2112 },
+      { latitude: 38.8818, longitude: -77.2118 },
+      { latitude: 38.8808, longitude: -77.2140 },
+      { latitude: 38.8810, longitude: -77.2165 },
+      { latitude: 38.8820, longitude: -77.2188 },
+      { latitude: 38.8832, longitude: -77.2198 },
+    ],
+  },
+  // Red — Merrifield / Mosaic area
+  {
+    id: 'terr_red_3',
+    team: 'red',
+    claimedBy: 'runner_mike',
+    claimedAt: Date.now() - 86400000 * 2,
+    polygon: [
+      { latitude: 38.8732, longitude: -77.2310 },
+      { latitude: 38.8742, longitude: -77.2285 },
+      { latitude: 38.8748, longitude: -77.2258 },
+      { latitude: 38.8740, longitude: -77.2238 },
+      { latitude: 38.8725, longitude: -77.2228 },
+      { latitude: 38.8708, longitude: -77.2235 },
+      { latitude: 38.8698, longitude: -77.2258 },
+      { latitude: 38.8702, longitude: -77.2282 },
+      { latitude: 38.8712, longitude: -77.2305 },
+      { latitude: 38.8725, longitude: -77.2315 },
+    ],
+  },
+
+  // === GREEN TEAM — Falls Church area ===
+  {
+    id: 'terr_green_1',
+    team: 'green',
+    claimedBy: 'biker_lily',
+    claimedAt: Date.now() - 86400000 * 5,
+    polygon: [
+      { latitude: 38.8842, longitude: -77.1732 },
+      { latitude: 38.8855, longitude: -77.1708 },
+      { latitude: 38.8860, longitude: -77.1680 },
+      { latitude: 38.8852, longitude: -77.1655 },
+      { latitude: 38.8838, longitude: -77.1640 },
+      { latitude: 38.8820, longitude: -77.1638 },
+      { latitude: 38.8805, longitude: -77.1650 },
+      { latitude: 38.8798, longitude: -77.1672 },
+      { latitude: 38.8800, longitude: -77.1698 },
+      { latitude: 38.8812, longitude: -77.1720 },
+      { latitude: 38.8828, longitude: -77.1735 },
+    ],
+  },
+  // Green — W&OD Trail / East Falls Church
+  {
+    id: 'terr_green_2',
+    team: 'green',
+    claimedBy: 'runner_josh',
+    claimedAt: Date.now() - 86400000 * 3,
+    polygon: [
+      { latitude: 38.8782, longitude: -77.1590 },
+      { latitude: 38.8792, longitude: -77.1565 },
+      { latitude: 38.8795, longitude: -77.1538 },
+      { latitude: 38.8788, longitude: -77.1515 },
+      { latitude: 38.8772, longitude: -77.1505 },
+      { latitude: 38.8758, longitude: -77.1512 },
+      { latitude: 38.8748, longitude: -77.1535 },
+      { latitude: 38.8750, longitude: -77.1560 },
+      { latitude: 38.8760, longitude: -77.1582 },
+      { latitude: 38.8772, longitude: -77.1592 },
+    ],
+  },
+  // Green — Cuts into Red's Merrifield zone (steal!)
+  {
+    id: 'terr_green_3',
+    team: 'green',
+    claimedBy: 'walker_emma',
+    claimedAt: Date.now() - 86400000 * 1,
+    polygon: [
+      { latitude: 38.8738, longitude: -77.2275 },
+      { latitude: 38.8745, longitude: -77.2255 },
+      { latitude: 38.8742, longitude: -77.2232 },
+      { latitude: 38.8730, longitude: -77.2218 },
+      { latitude: 38.8715, longitude: -77.2222 },
+      { latitude: 38.8708, longitude: -77.2242 },
+      { latitude: 38.8712, longitude: -77.2265 },
+      { latitude: 38.8725, longitude: -77.2280 },
+    ],
+  },
+
+  // === YELLOW TEAM — McLean area ===
+  {
+    id: 'terr_yellow_1',
+    team: 'yellow',
+    claimedBy: 'biker_nina',
+    claimedAt: Date.now() - 86400000 * 4,
+    polygon: [
+      { latitude: 38.9355, longitude: -77.1815 },
+      { latitude: 38.9368, longitude: -77.1790 },
+      { latitude: 38.9372, longitude: -77.1762 },
+      { latitude: 38.9365, longitude: -77.1738 },
+      { latitude: 38.9350, longitude: -77.1722 },
+      { latitude: 38.9332, longitude: -77.1720 },
+      { latitude: 38.9318, longitude: -77.1735 },
+      { latitude: 38.9312, longitude: -77.1758 },
+      { latitude: 38.9315, longitude: -77.1782 },
+      { latitude: 38.9325, longitude: -77.1800 },
+      { latitude: 38.9340, longitude: -77.1812 },
+    ],
+  },
+  // Yellow — Spring Hill area, cuts into Blue's north Tysons (steal!)
+  {
+    id: 'terr_yellow_2',
+    team: 'yellow',
+    claimedBy: 'biker_nina',
+    claimedAt: Date.now() - 86400000 * 1,
+    polygon: [
+      { latitude: 38.9248, longitude: -77.2265 },
+      { latitude: 38.9255, longitude: -77.2242 },
+      { latitude: 38.9252, longitude: -77.2218 },
+      { latitude: 38.9242, longitude: -77.2200 },
+      { latitude: 38.9228, longitude: -77.2198 },
+      { latitude: 38.9218, longitude: -77.2212 },
+      { latitude: 38.9215, longitude: -77.2238 },
+      { latitude: 38.9222, longitude: -77.2258 },
+      { latitude: 38.9235, longitude: -77.2270 },
+    ],
+  },
+
+  // === PURPLE TEAM — Fairfax City area ===
+  {
+    id: 'terr_purple_1',
+    team: 'purple',
+    claimedBy: 'runner_zoe',
+    claimedAt: Date.now() - 86400000 * 6,
+    polygon: [
+      { latitude: 38.8518, longitude: -77.2985 },
+      { latitude: 38.8530, longitude: -77.2960 },
+      { latitude: 38.8535, longitude: -77.2932 },
+      { latitude: 38.8528, longitude: -77.2908 },
+      { latitude: 38.8512, longitude: -77.2895 },
+      { latitude: 38.8495, longitude: -77.2898 },
+      { latitude: 38.8482, longitude: -77.2918 },
+      { latitude: 38.8480, longitude: -77.2945 },
+      { latitude: 38.8488, longitude: -77.2968 },
+      { latitude: 38.8502, longitude: -77.2985 },
+    ],
+  },
+  // Purple — Vienna Town area
+  {
+    id: 'terr_purple_2',
+    team: 'purple',
+    claimedBy: 'biker_marcus',
+    claimedAt: Date.now() - 86400000 * 3,
+    polygon: [
+      { latitude: 38.9028, longitude: -77.2672 },
+      { latitude: 38.9040, longitude: -77.2650 },
+      { latitude: 38.9042, longitude: -77.2625 },
+      { latitude: 38.9035, longitude: -77.2602 },
+      { latitude: 38.9020, longitude: -77.2592 },
+      { latitude: 38.9005, longitude: -77.2598 },
+      { latitude: 38.8995, longitude: -77.2618 },
+      { latitude: 38.8998, longitude: -77.2645 },
+      { latitude: 38.9008, longitude: -77.2665 },
+      { latitude: 38.9020, longitude: -77.2675 },
+    ],
+  },
+  // Purple — Cuts into Red's Dunn Loring zone (steal!)
+  {
+    id: 'terr_purple_3',
+    team: 'purple',
+    claimedBy: 'runner_zoe',
+    claimedAt: Date.now() - 86400000 * 1,
+    polygon: [
+      { latitude: 38.8848, longitude: -77.2162 },
+      { latitude: 38.8855, longitude: -77.2140 },
+      { latitude: 38.8850, longitude: -77.2118 },
+      { latitude: 38.8838, longitude: -77.2108 },
+      { latitude: 38.8822, longitude: -77.2115 },
+      { latitude: 38.8815, longitude: -77.2135 },
+      { latitude: 38.8820, longitude: -77.2158 },
+      { latitude: 38.8835, longitude: -77.2168 },
+    ],
+  },
+];
 
 export const SAMPLE_LANDMARKS = [
   {

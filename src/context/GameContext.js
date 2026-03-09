@@ -414,8 +414,33 @@ export function GameProvider({ children }) {
 
   // Seed Firebase with sample data if empty, then subscribe to real-time updates
   useEffect(() => {
+    // Pre-process sample territories: simulate claim order so newer ones cut through older
+    const processedTerritories = (() => {
+      const sorted = [...SAMPLE_TERRITORIES].sort((a, b) => a.claimedAt - b.claimedAt);
+      let result = [];
+      for (const territory of sorted) {
+        // Subtract this territory from all existing other-team territories
+        const updated = [];
+        for (const existing of result) {
+          if (existing.team === territory.team) {
+            updated.push(existing);
+            continue;
+          }
+          const remaining = subtractTerritory(existing.polygon, territory.polygon);
+          if (remaining.length === 0) continue; // Fully consumed
+          updated.push({ ...existing, polygon: remaining[0] });
+          for (let i = 1; i < remaining.length; i++) {
+            updated.push({ ...existing, id: `${existing.id}_frag_${i}`, polygon: remaining[i] });
+          }
+        }
+        updated.push(territory);
+        result = updated;
+      }
+      return result;
+    })();
+
     seedInitialData({
-      territories: SAMPLE_TERRITORIES,
+      territories: processedTerritories,
       landmarks: SAMPLE_LANDMARKS,
       communityLandmarks: SAMPLE_COMMUNITY_LANDMARKS,
     }).catch((err) => console.warn('Firebase seed error:', err));

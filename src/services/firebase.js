@@ -91,24 +91,49 @@ export async function removeCommunityLandmark(id) {
 
 // --- Seed initial data (run once) ---
 export async function seedInitialData(sampleData) {
-  const rootRef = ref(db, '/');
-  const snapshot = await get(rootRef);
-  if (snapshot.exists()) return; // Already seeded
-
   const { territories, landmarks, communityLandmarks } = sampleData;
-
   const seedData = {};
-  territories.forEach((t) => {
-    seedData[`territories/${t.id}`] = t;
-  });
-  landmarks.forEach((l) => {
-    seedData[`landmarks/${l.id}`] = l;
-  });
-  communityLandmarks.forEach((cl) => {
-    seedData[`communityLandmarks/${cl.id}`] = cl;
-  });
 
-  await update(ref(db), seedData);
+  // Seed sample territories — always overwrite sample entries (terr_ prefix)
+  // but preserve user-created territories
+  if (territories.length > 0) {
+    const terrSnap = await get(ref(db, 'territories'));
+    const existing = terrSnap.exists() ? terrSnap.val() : {};
+    // Remove old sample territories (terr_ and frag variants)
+    Object.keys(existing).forEach((key) => {
+      if (key.startsWith('terr_')) {
+        seedData[`territories/${key}`] = null;
+      }
+    });
+    // Write processed sample territories
+    territories.forEach((t) => {
+      if (t.id.startsWith('terr_')) {
+        seedData[`territories/${t.id}`] = t;
+      } else if (!existing[t.id]) {
+        seedData[`territories/${t.id}`] = t;
+      }
+    });
+  }
+
+  // Seed landmarks if none exist
+  const lmSnap = await get(ref(db, 'landmarks'));
+  if (!lmSnap.exists()) {
+    landmarks.forEach((l) => {
+      seedData[`landmarks/${l.id}`] = l;
+    });
+  }
+
+  // Seed community landmarks if none exist
+  const clSnap = await get(ref(db, 'communityLandmarks'));
+  if (!clSnap.exists()) {
+    communityLandmarks.forEach((cl) => {
+      seedData[`communityLandmarks/${cl.id}`] = cl;
+    });
+  }
+
+  if (Object.keys(seedData).length > 0) {
+    await update(ref(db), seedData);
+  }
 }
 
 export { db };
